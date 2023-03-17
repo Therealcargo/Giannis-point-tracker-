@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Giannis Antetokounmpo Game Stats</title>
+  </head>
+  <body>
+    <h1>Giannis Antetokounmpo Game Stats</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Points Scored</th>
+        </tr>
+      </thead>
+      <tbody id="game-stats"></tbody>
+    </table>
+
+    <script>
+      const playerName = "Giannis Antetokounmpo";
+      const apiUrl = "https://www.balldontlie.io/api/v1/stats";
+
+      // Make a request to the API to retrieve stats for the player
+      fetch(`${apiUrl}?player_ids[]=${playerName}`)
+        .then(response => response.json())
+        .then(data => {
+          // Loop through each game played by the player and add the stats to the table
+          const gameStatsTable = document.getElementById("game-stats");
+          data.data.forEach(game => {
+            const gameDate = new Date(game.game.date);
+            const pointsScored = game.pts;
+            const gameRow = `
+              <tr>
+                <td>${gameDate.toDateString()}</td>
+                <td>${pointsScored}</td>
+              </tr>
+            `;
+            gameStatsTable.innerHTML += gameRow;
+          });
+        })
+        .catch(error => console.log(error));
+    </script>
+  </body>
+</html>
